@@ -6,6 +6,22 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Numbers {
-    private int num1;
-    private int num2;
+    private String num1;
+    private String num2;
+
+    public static String toBinary(String num) {
+        return String.valueOf(Integer.parseInt(num, 2));
+    }
+
+    public static int toOctalString(String num) {
+        return Integer.parseInt(num, 8);
+    }
+
+    public static int toHexString(String num) {
+        return Integer.parseInt(num, 16);
+    }
+
+    public static String toDecimalString(String num) {
+        return String.valueOf(Integer.parseInt(num));
+    }
 }

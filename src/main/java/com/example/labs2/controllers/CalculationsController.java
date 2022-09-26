@@ -25,7 +25,7 @@ public class CalculationsController {
     }
 
     @GetMapping(path = "/addition")
-    public String getAddition(Numbers numbers) {
-        return String.valueOf(operations.plus(numbers));
+    public int getAddition(Numbers numbers) {
+        return Operations.calculate(numbers, "+");
     }
 }
