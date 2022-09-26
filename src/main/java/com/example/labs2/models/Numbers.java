@@ -13,12 +13,12 @@ public class Numbers {
         return String.valueOf(Integer.parseInt(num, 2));
     }
 
-    public static int toOctalString(String num) {
-        return Integer.parseInt(num, 8);
+    public static String toOctalString(String num) {
+        return String.valueOf(Integer.parseInt(num, 8));
     }
 
-    public static int toHexString(String num) {
-        return Integer.parseInt(num, 16);
+    public static String toHexString(String num) {
+        return String.valueOf(Integer.parseInt(num, 16));
     }
 
     public static String toDecimalString(String num) {

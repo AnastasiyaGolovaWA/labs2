@@ -11,8 +11,14 @@ public class Operations {
 
     public static String convert(String num) {
         String res = "";
-        if (num.startsWith("0b")) {
+        if (num.startsWith("0b") || num.startsWith("0B")) {
             res = Numbers.toBinary(num.substring(2));
+        }
+        if (num.startsWith("0")) {
+            res = Numbers.toOctalString(num.substring(1));
+        }
+        if (num.startsWith("0x") || num.startsWith("0X")) {
+            res = Numbers.toHexString(num.substring(2));
         } else {
             res = Numbers.toDecimalString(num);
         }
