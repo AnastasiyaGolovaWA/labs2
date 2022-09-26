@@ -21,6 +21,26 @@ public class Operations {
         return Integer.parseInt(num1) / Integer.parseInt(num2);
     }
 
+    public static int getSystem(String num) {
+        int system = 0;
+        String[] numbers = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+        if (num.startsWith("0b") || num.startsWith("0B")) {
+            system = 2;
+        }
+        if (num.startsWith("0x") || num.startsWith("0X")) {
+            system = 16;
+        }
+        if (!num.contains("b") && !num.contains("x") && !num.contains("B") && !num.contains("X")) {
+            system = 8;
+        }
+        for (String number : numbers) {
+            if (num.startsWith(number)) {
+                system = 10;
+            }
+        }
+        return system;
+    }
+
     public static String convert(String num) {
         String res = "";
         String[] numbers = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};

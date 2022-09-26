@@ -2,12 +2,14 @@ package com.example.labs2.models;
 
 import com.example.labs2.models.enums.OperationsEnum;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Data
+@AllArgsConstructor
 @Entity
 @Table(name = "calculations")
 public class Calculations {
@@ -35,9 +37,13 @@ public class Calculations {
 
     @NotNull
     @Column(name = "date")
-    private Date date;
+    private String date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "operation_name")
     private OperationsEnum operationsEnum;
+
+    public Calculations() {
+
+    }
 }
