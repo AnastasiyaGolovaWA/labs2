@@ -11,16 +11,20 @@ public class Operations {
 
     public static String convert(String num) {
         String res = "";
+        String[] numbers = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
         if (num.startsWith("0b") || num.startsWith("0B")) {
             res = Numbers.toBinary(num.substring(2));
         }
-        if (num.startsWith("0")) {
-            res = Numbers.toOctalString(num.substring(1));
-        }
         if (num.startsWith("0x") || num.startsWith("0X")) {
             res = Numbers.toHexString(num.substring(2));
-        } else {
-            res = Numbers.toDecimalString(num);
+        }
+        if (!num.contains("b") && !num.contains("x") && !num.contains("B") && !num.contains("X")) {
+            res = Numbers.toOctalString(num.substring(1));
+        }
+        for (String number : numbers) {
+            if (num.startsWith(number)) {
+                res = Numbers.toDecimalString(num);
+            }
         }
         return res;
     }
