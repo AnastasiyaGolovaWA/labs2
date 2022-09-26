@@ -4,7 +4,9 @@ import com.example.labs2.models.Numbers;
 import com.example.labs2.service.CalculationsService;
 import com.example.labs2.service.Operations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RequestMapping(value = "/calculations")
 @RestController
@@ -27,5 +29,20 @@ public class CalculationsController {
     @GetMapping(path = "/addition")
     public int getAddition(Numbers numbers) {
         return Operations.calculate(numbers, "+");
+    }
+
+    @GetMapping(path = "/subtraction")
+    public int getSubtraction(Numbers numbers) {
+        return Operations.calculate(numbers, "-");
+    }
+
+    @GetMapping(path = "/division")
+    public int getDivision(Numbers numbers) {
+        return Operations.calculate(numbers, "/");
+    }
+
+    @GetMapping(path = "/multiplication")
+    public int getMultiplication(Numbers numbers) {
+        return Operations.calculate(numbers, "*");
     }
 }

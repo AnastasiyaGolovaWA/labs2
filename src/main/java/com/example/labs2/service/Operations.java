@@ -9,6 +9,18 @@ public class Operations {
         return Integer.parseInt(num1) + Integer.parseInt(num2);
     }
 
+    public static int minus(String num1, String num2) {
+        return Integer.parseInt(num1) - Integer.parseInt(num2);
+    }
+
+    public static int multiplication(String num1, String num2) {
+        return Integer.parseInt(num1) * Integer.parseInt(num2);
+    }
+
+    public static int division(String num1, String num2) {
+        return Integer.parseInt(num1) / Integer.parseInt(num2);
+    }
+
     public static String convert(String num) {
         String res = "";
         String[] numbers = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
@@ -34,6 +46,15 @@ public class Operations {
         switch (op) {
             case "+":
                 result = plus(convert(numbers.getNum1()), convert(numbers.getNum2()));
+                break;
+            case "-":
+                result = minus(convert(numbers.getNum1()), convert(numbers.getNum2()));
+                break;
+            case "*":
+                result = multiplication(convert(numbers.getNum1()), convert(numbers.getNum2()));
+                break;
+            case "/":
+                result = division(convert(numbers.getNum1()), convert(numbers.getNum2()));
                 break;
         }
         return result;
