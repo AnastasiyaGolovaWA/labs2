@@ -2,17 +2,19 @@ package com.example.labs2.controllers;
 
 import com.example.labs2.models.Calculations;
 import com.example.labs2.models.Numbers;
+import com.example.labs2.models.NumbersDTO;
 import com.example.labs2.models.enums.OperationsEnum;
+import com.example.labs2.repository.CalculationsRepository;
 import com.example.labs2.service.CalculationsService;
 import com.example.labs2.service.Operations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.labs2.service.Operations.getSystem;
 
@@ -21,6 +23,8 @@ import static com.example.labs2.service.Operations.getSystem;
 public class CalculationsController {
 
     private CalculationsService calculationsService;
+
+    private CalculationsRepository calculationsRepository;
 
     private Operations operations;
 
@@ -32,7 +36,7 @@ public class CalculationsController {
         calculations.setNumberTwo(numbers.getNum2());
         calculations.setNumberSystemOne(getSystem(numbers.getNum1()));
         calculations.setNumberSystemTwo(getSystem(numbers.getNum2()));
-        calculations.setDate(dateFormat.format(date));
+        calculations.setDateCreated(date);
         calculations.setOperationsEnum(op);
         calculationsService.save(calculations);
     }
@@ -40,6 +44,11 @@ public class CalculationsController {
     @Autowired
     public void setCalculationsService(CalculationsService calculationsService) {
         this.calculationsService = calculationsService;
+    }
+
+    @Autowired
+    public void setCalculationsRepository(CalculationsRepository calculationsRepository) {
+        this.calculationsRepository = calculationsRepository;
     }
 
     @Autowired
@@ -69,5 +78,10 @@ public class CalculationsController {
     public int getMultiplication(Numbers numbers) {
         createRecordToDatabase(numbers, OperationsEnum.MULTIPLICATION);
         return Operations.calculate(numbers, "*");
+    }
+
+    @GetMapping("/findByParameters")
+    public List<Calculations> findByParameters(NumbersDTO numbersDTO) {
+        return calculationsRepository.findByParameters();
     }
 }

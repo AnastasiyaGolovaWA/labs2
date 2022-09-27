@@ -7,7 +7,7 @@ CREATE TABLE calculations
     number_system_one INTEGER,
     number_two        varchar(100),
     number_system_two INTEGER,
-    date              varchar(100),
+    date_created      timestamp,
     operation_name    varchar(100),
     primary key (id)
 );

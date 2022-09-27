@@ -36,8 +36,8 @@ public class Calculations {
     private Integer numberSystemTwo;
 
     @NotNull
-    @Column(name = "date")
-    private String date;
+    @Column(name = "date_created")
+    private Date dateCreated;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "operation_name")
