@@ -82,6 +82,6 @@ public class CalculationsController {
 
     @GetMapping("/findByParameters")
     public List<Calculations> findByParameters(NumbersDTO numbersDTO) {
-        return calculationsRepository.findByParameters();
+        return calculationsRepository.findByParameters(numbersDTO.getNumberSystemOne(), numbersDTO.getNumberSystemTwo(), numbersDTO.getOperationName());
     }
 }
