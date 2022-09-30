@@ -1,6 +1,7 @@
 package com.example.labs2.models;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -12,7 +13,9 @@ public class NumbersDTO {
 
     String operationName;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     Date startDate;
 
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
     Date endDate;
 }
