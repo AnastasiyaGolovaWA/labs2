@@ -1,5 +1,6 @@
 package com.example.labs2;
 
+import com.example.labs2.models.Calculations;
 import com.example.labs2.repository.CalculationsRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,8 +33,7 @@ public class Labs2ApplicationTests {
             .withDatabaseName("numbers")
             .withUsername("postgres")
             .withPassword("root")
-            .withInitScript("database/V1__create.sql")
-            .withInitScript("database/V2__insert.sql");
+            .withInitScript("database/V1__create.sql");
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
@@ -42,8 +48,11 @@ public class Labs2ApplicationTests {
 
     @Test
     @Transactional
-    public void calculatorByParameters() {
-        String hello = "hello";
-        assertEquals("hello", hello);
+    public void calculatorByParameters() throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = df.parse("2022-09-20");
+        Date endDate = df.parse("2022-10-20");
+        List<Calculations> calculations = calculationsRepository.findByParameters(2, 10, "ADDITION", startDate, endDate);
+        assertEquals("hello", calculations.get(0));
     }
 }
