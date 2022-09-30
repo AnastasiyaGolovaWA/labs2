@@ -1,7 +1,10 @@
 package com.example.labs2;
 
 import com.example.labs2.models.Calculations;
+import com.example.labs2.models.Numbers;
 import com.example.labs2.repository.CalculationsRepository;
+import com.example.labs2.service.CalculationsService;
+import com.example.labs2.service.Operations;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +31,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Labs2ApplicationTests {
     @Autowired
     CalculationsRepository calculationsRepository;
+
+    @Autowired
+    CalculationsService calculationsService;
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:13")
             .withDatabaseName("numbers")
@@ -53,6 +59,47 @@ public class Labs2ApplicationTests {
         Date startDate = df.parse("2022-09-20");
         Date endDate = df.parse("2022-10-20");
         List<Calculations> calculations = calculationsRepository.findByParameters(2, 10, "ADDITION", startDate, endDate);
-        assertEquals("hello", calculations.get(0));
+        assertEquals(1, calculations.size());
     }
+
+    @Test
+    @Transactional
+    public void createPlus() {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0b101");
+        numbers.setNum2("0b111");
+        var res = Operations.calculate(numbers, "+");
+        assertEquals(12, res);
+    }
+
+    @Test
+    @Transactional
+    public void createDivision() {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0x152");
+        numbers.setNum2("0b11");
+        var res = Operations.calculate(numbers, "/");
+        assertEquals(112, res);
+    }
+
+    @Test
+    @Transactional
+    public void createMult() {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0x152");
+        numbers.setNum2("0b11");
+        var res = Operations.calculate(numbers, "*");
+        assertEquals(1014, res);
+    }
+
+    @Test
+    @Transactional
+    public void createSubtract() {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0x152");
+        numbers.setNum2("0b11");
+        var res = Operations.calculate(numbers, "-");
+        assertEquals(335, res);
+    }
+
 }
