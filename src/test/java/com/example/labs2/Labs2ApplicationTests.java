@@ -64,6 +64,36 @@ public class Labs2ApplicationTests {
 
     @Test
     @Transactional
+    public void calculatorWithoutOperation() throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = df.parse("2022-09-20");
+        Date endDate = df.parse("2022-10-20");
+        List<Calculations> calculations = calculationsRepository.findByParameters(2, 10, "", startDate, endDate);
+        assertEquals(4, calculations.size());
+    }
+
+    @Test
+    @Transactional
+    public void calculatorFindByDates() throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = df.parse("2022-09-20");
+        Date endDate = df.parse("2022-10-20");
+        List<Calculations> calculations = calculationsRepository.findByParameters(0, 0, "", startDate, endDate);
+        assertEquals(16, calculations.size());
+    }
+
+    @Test
+    @Transactional
+    public void calculatorFindByDatesAndDivisionOperation() throws ParseException {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = df.parse("2022-09-20");
+        Date endDate = df.parse("2022-10-20");
+        List<Calculations> calculations = calculationsRepository.findByParameters(0, 0, "DIVISION", startDate, endDate);
+        assertEquals(4, calculations.size());
+    }
+
+    @Test
+    @Transactional
     public void createPlus() {
         Numbers numbers = new Numbers();
         numbers.setNum1("0b101");
