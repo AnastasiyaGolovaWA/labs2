@@ -8,13 +8,16 @@ import com.example.labs2.repository.CalculationsRepository;
 import com.example.labs2.service.CalculationsService;
 import com.example.labs2.service.Operations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.labs2.service.Operations.getSystem;
 
@@ -81,7 +84,11 @@ public class CalculationsController {
     }
 
     @GetMapping("/findByParameters")
-    public List<Calculations> findByParameters(NumbersDTO numbersDTO) {
-        return calculationsRepository.findByParameters(numbersDTO.getNumberSystemOne(), numbersDTO.getNumberSystemTwo(), numbersDTO.getOperationName(), numbersDTO.getStartDate(), numbersDTO.getEndDate());
+    public List<Calculations> findByParameters(Optional<NumbersDTO> numbersDTO) {
+        List<Calculations> result = new ArrayList<>();
+        if (numbersDTO.isPresent()) {
+            result = calculationsRepository.findByParameters(numbersDTO.get().getNumberSystemOne(), numbersDTO.get().getNumberSystemTwo(), numbersDTO.get().getOperationName(), numbersDTO.get().getStartDate(), numbersDTO.get().getEndDate());
+        }
+        return result;
     }
 }
