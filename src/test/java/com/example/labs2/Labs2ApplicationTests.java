@@ -25,8 +25,8 @@ public class Labs2ApplicationTests {
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:13")
             .withDatabaseName("numbers")
             .withUsername("postgres")
-            .withPassword("root");
-            //.withInitScript("resources/db.migration");
+            .withPassword("root")
+            .withInitScript("database");
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
@@ -34,6 +34,7 @@ public class Labs2ApplicationTests {
                     "spring.datasource.url=" + postgreSQLContainer.getJdbcUrl(),
                     "spring.datasource.username=" + postgreSQLContainer.getUsername(),
                     "spring.datasource.password=" + postgreSQLContainer.getPassword()
+
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
