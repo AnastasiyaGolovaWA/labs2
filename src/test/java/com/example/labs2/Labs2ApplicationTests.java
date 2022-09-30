@@ -26,7 +26,7 @@ public class Labs2ApplicationTests {
             .withDatabaseName("numbers")
             .withUsername("postgres")
             .withPassword("root")
-            .withInitScript("database");
+            .withInitScript("database/V1__create.sql");
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
         public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
