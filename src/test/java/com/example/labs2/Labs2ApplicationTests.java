@@ -216,15 +216,11 @@ public class Labs2ApplicationTests {
         numbersDTO.setOperationName("ADDITION");
         numbersDTO.setStartDate(startDate);
         numbersDTO.setEndDate(endDate);
-        var response = this.mockMvc.perform(get("/calculations/findByParameters")
-                        .param("numberSystemOne", String.valueOf(2))
-                        .param("numberSystemTwo", String.valueOf(2))
-                        .param("operationName", "ADDITION")
-                        .param("startDate", String.valueOf(numbersDTO.getStartDate()))
-                        .param("endDate", String.valueOf(numbersDTO.getEndDate())))
-
+        var response = this.mockMvc.perform(get("/calculations/findByParameters?endDate=2022-10-20&numberSystemOne=2&numberSystemTwo=2&operationName=ADDITION&startDate=2022-9-20")
+                )
                 .andReturn().getResponse();
-        //assertEquals(String.valueOf(res),response.getContentAsString());
+        List<Calculations> calculations = calculationsRepository.findByParameters(2, 10, "ADDITION", startDate, endDate);
+        assertEquals(calculations.size(),response.getHeaders("Content-Type").size());
         assertEquals(200, response.getStatus());
     }
 }

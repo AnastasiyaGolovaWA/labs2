@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.labs2.service.Operations.getSystem;
 
@@ -83,7 +81,7 @@ public class CalculationsController {
         return Operations.calculate(numbers, "*");
     }
 
-    @GetMapping("/findByParameters")
+    @GetMapping(path = "/findByParameters")
     public List<Calculations> findByParameters(NumbersDTO numbersDTO) {
         return calculationsRepository.findByParameters(numbersDTO.getNumberSystemOne(), numbersDTO.getNumberSystemTwo(), numbersDTO.getOperationName(), numbersDTO.getStartDate(), numbersDTO.getEndDate());
     }
