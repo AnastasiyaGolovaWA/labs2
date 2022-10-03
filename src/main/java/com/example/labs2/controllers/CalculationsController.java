@@ -84,11 +84,7 @@ public class CalculationsController {
     }
 
     @GetMapping("/findByParameters")
-    public List<Calculations> findByParameters(Optional<NumbersDTO> numbersDTO) {
-        List<Calculations> result = new ArrayList<>();
-        if (numbersDTO.isPresent()) {
-            result = calculationsRepository.findByParameters(numbersDTO.get().getNumberSystemOne(), numbersDTO.get().getNumberSystemTwo(), numbersDTO.get().getOperationName(), numbersDTO.get().getStartDate(), numbersDTO.get().getEndDate());
-        }
-        return result;
+    public List<Calculations> findByParameters(NumbersDTO numbersDTO) {
+        return calculationsRepository.findByParameters(numbersDTO.getNumberSystemOne(), numbersDTO.getNumberSystemTwo(), numbersDTO.getOperationName(), numbersDTO.getStartDate(), numbersDTO.getEndDate());
     }
 }

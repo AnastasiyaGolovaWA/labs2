@@ -2,20 +2,29 @@ package com.example.labs2;
 
 import com.example.labs2.models.Calculations;
 import com.example.labs2.models.Numbers;
+import com.example.labs2.models.NumbersDTO;
 import com.example.labs2.repository.CalculationsRepository;
 import com.example.labs2.service.CalculationsService;
 import com.example.labs2.service.Operations;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
+import static io.restassured.RestAssured.*;
+import static io.restassured.matcher.RestAssuredMatchers.*;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -24,9 +33,13 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @ContextConfiguration(initializers = {Labs2ApplicationTests.Initializer.class})
+@AutoConfigureMockMvc
 @Testcontainers
 public class Labs2ApplicationTests {
     @Autowired
@@ -34,6 +47,10 @@ public class Labs2ApplicationTests {
 
     @Autowired
     CalculationsService calculationsService;
+
+    @Autowired
+    protected MockMvc mockMvc;
+
     @Container
     public static PostgreSQLContainer<?> postgreSQLContainer = new PostgreSQLContainer<>("postgres:13")
             .withDatabaseName("numbers")
@@ -132,4 +149,82 @@ public class Labs2ApplicationTests {
         assertEquals(335, res);
     }
 
+    @Test
+    public void testSub() throws Exception {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0x152");
+        numbers.setNum2("0b11");
+        var res = Operations.calculate(numbers, "-");
+        var response = this.mockMvc.perform(get("/calculations/subtraction")
+                        .param("num1", numbers.getNum1())
+                        .param("num2", numbers.getNum2()))
+                .andReturn().getResponse();
+        assertEquals(String.valueOf(res), response.getContentAsString());
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testAdd() throws Exception {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0x152");
+        numbers.setNum2("0b11");
+        var res = Operations.calculate(numbers, "+");
+        var response = this.mockMvc.perform(get("/calculations/addition")
+                        .param("num1", numbers.getNum1())
+                        .param("num2", numbers.getNum2()))
+                .andReturn().getResponse();
+        assertEquals(String.valueOf(res), response.getContentAsString());
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testMult() throws Exception {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0x152");
+        numbers.setNum2("0b11");
+        var res = Operations.calculate(numbers, "*");
+        var response = this.mockMvc.perform(get("/calculations/multiplication")
+                        .param("num1", numbers.getNum1())
+                        .param("num2", numbers.getNum2()))
+                .andReturn().getResponse();
+        assertEquals(String.valueOf(res), response.getContentAsString());
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void testDiv() throws Exception {
+        Numbers numbers = new Numbers();
+        numbers.setNum1("0x152");
+        numbers.setNum2("0b11");
+        var res = Operations.calculate(numbers, "/");
+        var response = this.mockMvc.perform(get("/calculations/division")
+                        .param("num1", numbers.getNum1())
+                        .param("num2", numbers.getNum2()))
+                .andReturn().getResponse();
+        assertEquals(String.valueOf(res), response.getContentAsString());
+        assertEquals(200, response.getStatus());
+    }
+
+    @Test
+    public void findByParameters() throws Exception {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Date startDate = df.parse("2022-09-20");
+        Date endDate = df.parse("2022-10-20");
+        NumbersDTO numbersDTO = new NumbersDTO();
+        numbersDTO.setNumberSystemOne(2);
+        numbersDTO.setNumberSystemTwo(2);
+        numbersDTO.setOperationName("ADDITION");
+        numbersDTO.setStartDate(startDate);
+        numbersDTO.setEndDate(endDate);
+        var response = this.mockMvc.perform(get("/calculations/findByParameters")
+                        .param("numberSystemOne", String.valueOf(2))
+                        .param("numberSystemTwo", String.valueOf(2))
+                        .param("operationName", "ADDITION")
+                        .param("startDate", String.valueOf(numbersDTO.getStartDate()))
+                        .param("endDate", String.valueOf(numbersDTO.getEndDate())))
+
+                .andReturn().getResponse();
+        //assertEquals(String.valueOf(res),response.getContentAsString());
+        assertEquals(200, response.getStatus());
+    }
 }
