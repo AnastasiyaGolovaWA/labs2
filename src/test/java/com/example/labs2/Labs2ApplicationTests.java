@@ -208,6 +208,7 @@ public class Labs2ApplicationTests {
         numbersDTO.setEndDate(endDate);
         var response = this.mockMvc.perform(get("/calculations/findByParameters?endDate=2022-10-20&numberSystemOne=2&numberSystemTwo=2&startDate=2022-9-20")
                         .param("operationName", numbersDTO.getOperationName())
+                        //TODO.content()
                 )
                 .andReturn().getResponse();
         List<Calculations> calculations = calculationsRepository.findByParameters(2, 10, numbersDTO.getOperationName(), startDate, endDate);
