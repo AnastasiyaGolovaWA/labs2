@@ -9,7 +9,6 @@ import com.example.labs2.service.Operations;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
@@ -21,11 +20,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
-import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,9 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @ContextConfiguration(initializers = {Labs2ApplicationTests.Initializer.class})
@@ -211,16 +203,15 @@ public class Labs2ApplicationTests {
         Date startDate = df.parse("2022-09-20");
         Date endDate = df.parse("2022-10-20");
         NumbersDTO numbersDTO = new NumbersDTO();
-        numbersDTO.setNumberSystemOne(2);
-        numbersDTO.setNumberSystemTwo(2);
         numbersDTO.setOperationName("ADDITION");
         numbersDTO.setStartDate(startDate);
         numbersDTO.setEndDate(endDate);
-        var response = this.mockMvc.perform(get("/calculations/findByParameters?endDate=2022-10-20&numberSystemOne=2&numberSystemTwo=2&operationName=ADDITION&startDate=2022-9-20")
+        var response = this.mockMvc.perform(get("/calculations/findByParameters?endDate=2022-10-20&numberSystemOne=2&numberSystemTwo=2&startDate=2022-9-20")
+                        .param("operationName", numbersDTO.getOperationName())
                 )
                 .andReturn().getResponse();
-        List<Calculations> calculations = calculationsRepository.findByParameters(2, 10, "ADDITION", startDate, endDate);
-        assertEquals(calculations.size(),response.getHeaders("Content-Type").size());
+        List<Calculations> calculations = calculationsRepository.findByParameters(2, 10, numbersDTO.getOperationName(), startDate, endDate);
+        assertEquals(calculations.size(), response.getHeaders("Content-Type").size());
         assertEquals(200, response.getStatus());
     }
 }
