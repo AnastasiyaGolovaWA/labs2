@@ -4,18 +4,12 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.springframework.http.HttpStatus;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 
 public class StepDefsIntegrationTest extends SpringIntegrationTest {
-
-    @When("^the client calls /baeldung$")
-    public void the_client_issues_POST_hello() throws Throwable {
-        executePost();
-    }
 
     @Given("^the client calls /hello$")
     public void the_client_issues_GET_hello() throws Throwable {
@@ -27,10 +21,10 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
         executeGet("http://localhost:8080/calculations/addition");
     }
 
-    @Then("^the client receives status code of (\\d+)$")
-    public void the_client_receives_status_code_of(int statusCode) throws Throwable {
-        final HttpStatus currentStatusCode = latestResponse.getTheResponse().getStatusCode();
-        assertThat("status code is incorrect : " + latestResponse.getBody(), currentStatusCode.value(), is(statusCode));
+    @Then("^the client receives result is (\\d+)$")
+    public void the_client_receives_status_code_of(final String result) throws Throwable {
+        final var currentResult = latestResponse.getBody();
+        assertThat("result is incorrect : " + latestResponse.getBody(), currentResult, is(result));
     }
 
     @And("^the client receives server version (.+)$")

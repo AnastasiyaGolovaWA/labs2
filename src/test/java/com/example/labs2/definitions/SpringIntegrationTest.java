@@ -1,9 +1,5 @@
 package com.example.labs2.definitions;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.example.labs2.Labs2Application;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +10,18 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 @CucumberContextConfiguration
 @SpringBootTest(classes = Labs2Application.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 public class SpringIntegrationTest {
-    static ResponseResults latestResponse = null;
+    static HttpEntity<String> latestResponse = null;
 
     @Autowired
     protected RestTemplate restTemplate;
@@ -42,35 +41,14 @@ public class SpringIntegrationTest {
         params.put("num1", "10001");
         params.put("num2", "10012");
 
-        RestTemplate restOperations = new RestTemplate();
-        HttpEntity<String> response = restOperations.exchange(
+        HttpEntity<String> response = restTemplate.exchange(
                 urlTemplate,
                 HttpMethod.GET,
                 entity,
                 String.class,
                 params
         );
-    }
-
-    void executePost() throws IOException {
-        final Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "application/json");
-        final HeaderSettingRequestCallback requestCallback = new HeaderSettingRequestCallback(headers);
-        final ResponseResultErrorHandler errorHandler = new ResponseResultErrorHandler();
-
-        if (restTemplate == null) {
-            restTemplate = new RestTemplate();
-        }
-
-        restTemplate.setErrorHandler(errorHandler);
-        latestResponse = restTemplate
-                .execute("http://localhost:8082/baeldung", HttpMethod.POST, requestCallback, response -> {
-                    if (errorHandler.hadError) {
-                        return (errorHandler.getResults());
-                    } else {
-                        return (new ResponseResults(response));
-                    }
-                });
+        latestResponse = response;
     }
 
     private class ResponseResultErrorHandler implements ResponseErrorHandler {
