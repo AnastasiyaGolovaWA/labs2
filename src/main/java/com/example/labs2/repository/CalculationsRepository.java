@@ -22,4 +22,8 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Long
     @Modifying
     @Query(value = "delete from calculations", nativeQuery = true)
     void clear();
+
+    @Transactional
+    @Query(value = "select date_created from calculations where number_one=:numberOne", nativeQuery = true)
+    Date findDate(String numberOne);
 }

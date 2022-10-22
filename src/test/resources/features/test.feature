@@ -60,3 +60,8 @@ Feature: calculation test
     * the client receives status code of 200
     * the client receives result is "335"
 
+  @subtraction  @Before
+  Scenario: test subtraction with hex and binary numbers with date
+    * i execute endpoint is subtraction with "0x152;0b11"
+    * the date create is 2022-10-23
+

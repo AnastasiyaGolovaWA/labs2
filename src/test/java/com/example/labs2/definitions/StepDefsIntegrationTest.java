@@ -16,6 +16,7 @@ import org.springframework.boot.convert.Delimiter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -63,6 +64,12 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
     public void theClientReceivesResultIs(final String result) {
         final var currentResult = latestResponse.getBody();
         assertThat("result is incorrect : " + latestResponse.getBody(), currentResult, is(result));
+    }
+
+    @And("^the date create is (.+)$")
+    public boolean theClientReceivesResultIs(final Date result) {
+        final var currentResult = calculationsRepository.findDate("0x152");
+        return currentResult.after(result);
     }
 
     @Given("test get parameters for class")
