@@ -5,12 +5,7 @@ import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -22,6 +17,7 @@ import java.util.Map;
 @SpringBootTest(classes = Labs2Application.class, webEnvironment = WebEnvironment.DEFINED_PORT)
 public class SpringIntegrationTest {
     static HttpEntity<String> latestResponse = null;
+    static HttpStatus status = null;
 
     @Autowired
     protected RestTemplate restTemplate;
@@ -48,26 +44,7 @@ public class SpringIntegrationTest {
                 String.class,
                 params
         );
+        status = ((ResponseEntity<String>) response).getStatusCode();
         latestResponse = response;
-    }
-
-    private class ResponseResultErrorHandler implements ResponseErrorHandler {
-        private ResponseResults results = null;
-        private Boolean hadError = false;
-
-        private ResponseResults getResults() {
-            return results;
-        }
-
-        @Override
-        public boolean hasError(ClientHttpResponse response) throws IOException {
-            hadError = response.getRawStatusCode() >= 400;
-            return hadError;
-        }
-
-        @Override
-        public void handleError(ClientHttpResponse response) throws IOException {
-            results = new ResponseResults(response);
-        }
     }
 }
