@@ -5,18 +5,17 @@ import com.example.labs2.repository.CalculationsRepository;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
-import io.cucumber.java.Before;
-import io.cucumber.java.DefaultDataTableCellTransformer;
-import io.cucumber.java.DefaultDataTableEntryTransformer;
-import io.cucumber.java.DefaultParameterTransformer;
+import io.cucumber.java.*;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.convert.Delimiter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,9 +37,20 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
         return objectMapper.convertValue(fromValue, javaType);
     }
 
+    @ParameterType("(?:.+;)+.+")
+    public List<String> stringList(final String raw) {
+        final String[] values = raw.split(";");
+        return Arrays.asList(values);
+    }
+
     @When("i execute endpoint is {string} with num1 is {string} and num2 is {string}")
     public void theClientCallsEndpointIs(final String path, final String num1, final String num2) throws IOException {
         executeGet("http://localhost:8080/calculations/" + path, num1, num2);
+    }
+
+    @When("i execute endpoint is subtraction with \"{stringList}\"")
+    public void theClientCallsEndpointIs(@Delimiter("; ") final List<String> arg) throws IOException {
+        executeGet("http://localhost:8080/calculations/subtraction", arg.get(0), arg.get(1));
     }
 
     @Then("the client receives status code of {int}")

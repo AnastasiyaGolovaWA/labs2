@@ -54,3 +54,9 @@ Feature: calculation test
       | 202202  | 330303 |
       | 3320202 | 20202  |
 
+  @subtraction  @Before
+  Scenario: test subtraction with hex and binary numbers with custom dec
+    * i execute endpoint is subtraction with "0x152;0b11"
+    * the client receives status code of 200
+    * the client receives result is "335"
+
