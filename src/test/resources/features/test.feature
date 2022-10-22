@@ -1,6 +1,6 @@
-Feature: the version can be retrieved
+Feature: calculation test
 
-  Scenario: client makes call to GET /version
-    When the client calls /version
-    Then the client receives status code of 200
-    And the client receives result is 20013
+  Scenario: test addition
+    * i execute endpoint is "addition"
+    * the client receives status code of 200
+    * the client receives result is "20013"
