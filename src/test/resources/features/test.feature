@@ -46,3 +46,11 @@ Feature: calculation test
       | 202202  | 330303 |
       | 3320202 | 20202  |
 
+  Scenario: test get parameters with class
+    * test get parameters for class
+
+      | num1    | num2   |
+      | 1001010 | 131313 |
+      | 202202  | 330303 |
+      | 3320202 | 20202  |
+
