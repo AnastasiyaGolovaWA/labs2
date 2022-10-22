@@ -88,6 +88,7 @@ public class CalculationsController {
 
     @GetMapping("/version")
     public String getVersion() {
+        System.out.println("DJIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
         return "1.0";
     }
 }

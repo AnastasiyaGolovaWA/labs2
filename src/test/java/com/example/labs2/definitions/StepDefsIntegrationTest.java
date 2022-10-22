@@ -24,7 +24,7 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
 
     @When("^the client calls /version$")
     public void the_client_issues_GET_version() throws Throwable {
-        executeGet("http://localhost:8080/calculations/version");
+        executeGet("http://localhost:8080/calculations/addition");
     }
 
     @Then("^the client receives status code of (\\d+)$")
