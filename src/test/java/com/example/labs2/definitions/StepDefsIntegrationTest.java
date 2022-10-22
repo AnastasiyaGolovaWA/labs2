@@ -12,9 +12,9 @@ import static org.hamcrest.Matchers.is;
 
 public class StepDefsIntegrationTest extends SpringIntegrationTest {
 
-    @When("i execute endpoint is {string}")
-    public void theClientCallsEndpointIs(final String path) throws IOException {
-        executeGet("http://localhost:8080/calculations/" + path);
+    @When("i execute endpoint is {string} with num1 is {string} and num2 is {string}")
+    public void theClientCallsEndpointIs(final String path, final String num1, final String num2) throws IOException {
+        executeGet("http://localhost:8080/calculations/" + path, num1, num2);
     }
 
     @Then("the client receives status code of {int}")

@@ -22,7 +22,7 @@ public class SpringIntegrationTest {
     @Autowired
     protected RestTemplate restTemplate;
 
-    void executeGet(String url) throws IOException {
+    void executeGet(String url, String num1, String num2) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<?> entity = new HttpEntity<>(headers);
@@ -34,8 +34,8 @@ public class SpringIntegrationTest {
                 .toUriString();
 
         Map<String, String> params = new HashMap<>();
-        params.put("num1", "10001");
-        params.put("num2", "10012");
+        params.put("num1", num1);
+        params.put("num2", num2);
 
         HttpEntity<String> response = restTemplate.exchange(
                 urlTemplate,
