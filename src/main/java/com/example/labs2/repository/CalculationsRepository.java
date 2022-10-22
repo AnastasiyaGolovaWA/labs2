@@ -2,7 +2,9 @@ package com.example.labs2.repository;
 
 import com.example.labs2.models.Calculations;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -15,4 +17,9 @@ public interface CalculationsRepository extends JpaRepository<Calculations, Long
             "  AND (operation_name = :operationName OR :operationName='')\n" +
             "  AND (date_created > :startDate) AND (date_created < :endDate)", nativeQuery = true)
     List<Calculations> findByParameters(int numberSystemOne, int numberSystemTwo, String operationName, Date startDate, Date endDate);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from calculations", nativeQuery = true)
+    void clear();
 }
