@@ -85,10 +85,4 @@ public class CalculationsController {
     public List<Calculations> findByParameters(NumbersDTO numbersDTO) {
         return calculationsRepository.findByParameters(numbersDTO.getNumberSystemOne(), numbersDTO.getNumberSystemTwo(), numbersDTO.getOperationName(), numbersDTO.getStartDate(), numbersDTO.getEndDate());
     }
-
-    @GetMapping("/version")
-    public String getVersion() {
-        System.out.println("DJIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-        return "1.0";
-    }
 }
