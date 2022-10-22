@@ -55,6 +55,15 @@ Feature: calculation test
       | 3320202 | 20202  |
 
   @subtraction  @Before
+  Scenario: test get parameters with class sub
+    * test get parameters for class for subtraction
+
+      | num1    | num2   |
+      | 1001010 | 131313 |
+      | 202202  | 330303 |
+      | 3320202 | 20202  |
+
+  @subtraction  @Before
   Scenario: test subtraction with hex and binary numbers with custom dec
     * i execute endpoint is subtraction with "0x152;0b11"
     * the client receives status code of 200

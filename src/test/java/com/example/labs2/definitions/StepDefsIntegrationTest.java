@@ -73,10 +73,17 @@ public class StepDefsIntegrationTest extends SpringIntegrationTest {
     }
 
     @Given("test get parameters for class")
-    public void the_price_list_for_an_international_coffee_shop(final List<Numbers> arg) throws Throwable {
+    public void testGetParametersForClass(final List<Numbers> arg) throws Throwable {
         for (final Numbers numbers : arg) {
             System.out.print(numbers.getNum1());
             System.out.print(numbers.getNum2());
+        }
+    }
+
+    @Given("test get parameters for class for subtraction")
+    public void testGetParametersForClassSub(final List<Numbers> arg) throws Throwable {
+        for (final Numbers numbers : arg) {
+            executeGet("http://localhost:8080/calculations/subtraction", numbers.getNum1(), numbers.getNum2());
         }
     }
 
