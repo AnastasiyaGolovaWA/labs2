@@ -1,6 +1,7 @@
 package com.example.labs2.controllers;
 
 import com.example.labs2.models.Calculations;
+import com.example.labs2.models.NumberDate;
 import com.example.labs2.models.Numbers;
 import com.example.labs2.models.NumbersDTO;
 import com.example.labs2.models.enums.OperationsEnum;
@@ -84,5 +85,10 @@ public class CalculationsController {
     @GetMapping(path = "/findByParameters")
     public List<Calculations> findByParameters(NumbersDTO numbersDTO) {
         return calculationsRepository.findByParameters(numbersDTO.getNumberSystemOne(), numbersDTO.getNumberSystemTwo(), numbersDTO.getOperationName(), numbersDTO.getStartDate(), numbersDTO.getEndDate());
+    }
+
+    @GetMapping(path = "/findByDate")
+    public List<Calculations> findByDate(NumberDate number) {
+        return calculationsRepository.findByDate(number.getStartDate(), number.getEndDate());
     }
 }
