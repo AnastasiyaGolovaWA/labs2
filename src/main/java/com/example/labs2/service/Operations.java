@@ -5,76 +5,61 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class Operations {
-    public static int plus(String num1, String num2) {
-        return Integer.parseInt(num1) + Integer.parseInt(num2);
-    }
-
-    public static int minus(String num1, String num2) {
-        return Integer.parseInt(num1) - Integer.parseInt(num2);
-    }
-
-    public static int multiplication(String num1, String num2) {
-        return Integer.parseInt(num1) * Integer.parseInt(num2);
-    }
-
-    public static int division(String num1, String num2) {
-        return Integer.parseInt(num1) / Integer.parseInt(num2);
-    }
-
-    public static int getSystem(String num) {
-        int system = 0;
-        String[] numbers = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        if (num.startsWith("0b") || num.startsWith("0B")) {
-            system = 2;
-        }
-        if (num.startsWith("0x") || num.startsWith("0X")) {
-            system = 16;
-        }
-        if (!num.contains("b") && !num.contains("x") && !num.contains("B") && !num.contains("X")) {
-            system = 8;
-        }
-        for (String number : numbers) {
-            if (num.startsWith(number)) {
-                system = 10;
-            }
-        }
-        return system;
-    }
-
-    public static String convert(String num) {
-        String res = "";
-        String[] numbers = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9"};
-        if (num.startsWith("0b") || num.startsWith("0B")) {
-            res = Numbers.toBinary(num.substring(2));
-        }
-        if (num.startsWith("0x") || num.startsWith("0X")) {
-            res = Numbers.toHexString(num.substring(2));
-        }
-        if (!num.contains("b") && !num.contains("x") && !num.contains("B") && !num.contains("X")) {
-            res = Numbers.toOctalString(num.substring(1));
-        }
-        for (String number : numbers) {
-            if (num.startsWith(number)) {
-                res = Numbers.toDecimalString(num);
-            }
-        }
+    public static int plus(Numbers numbers) {
+        int res = numbers.getNum1() + numbers.getNum2();
         return res;
     }
 
-    public static int calculate(Numbers numbers, String op) {
-        int result = 0;
+    public static int minus(Numbers numbers) {
+        int res = numbers.getNum1() - numbers.getNum2();
+        return res;
+    }
+
+    public static int multiplication(Numbers numbers) {
+        int res = numbers.getNum1() * numbers.getNum2();
+        return res;
+    }
+
+    public static double division(Numbers numbers) {
+        double res = (double)numbers.getNum1() / numbers.getNum2();
+        return res;
+    }
+
+    public static Numbers convert(int num1, int num2, int system) {
+        Numbers numbers = new Numbers();
+        if (system == 2) {
+            numbers.setNum1(Numbers.toBinary(num1));
+            numbers.setNum2(Numbers.toBinary(num2));
+        }
+        if (system == 8) {
+            numbers.setNum1(Numbers.toOctalString(num1));
+            numbers.setNum2(Numbers.toOctalString(num2));
+        }
+        if (system == 16) {
+            numbers.setNum1(Numbers.toHexString(num1));
+            numbers.setNum2(Numbers.toHexString(num2));
+        }
+        if (system == 10) {
+            numbers.setNum1(num1);
+            numbers.setNum2(num2);
+        }
+        return numbers;
+    }
+
+    public static double calculate(Numbers numbers, char op) {
+        double result = 0.0;
         switch (op) {
-            case "+":
-                result = plus(convert(numbers.getNum1()), convert(numbers.getNum2()));
+            case '+':
+                result = plus(convert(numbers.getNum1(), numbers.getNum2(), numbers.getSystem()));
                 break;
-            case "-":
-                result = minus(convert(numbers.getNum1()), convert(numbers.getNum2()));
+            case '-':
+                result = minus(convert(numbers.getNum1(), numbers.getNum2(), numbers.getSystem()));
                 break;
-            case "*":
-                result = multiplication(convert(numbers.getNum1()), convert(numbers.getNum2()));
+            case '*':
+                result = multiplication(convert(numbers.getNum1(), numbers.getNum2(), numbers.getSystem()));
                 break;
-            case "/":
-                result = division(convert(numbers.getNum1()), convert(numbers.getNum2()));
+            case '/':
+                result = division(convert(numbers.getNum1(), numbers.getNum2(), numbers.getSystem()));
                 break;
         }
         return result;
